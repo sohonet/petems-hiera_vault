@@ -122,7 +122,14 @@ Puppet::Functions.create_function(:hiera_vault) do
       paths.each do |path|
 
         # Default to kv v1
-        secretpath = context.interpolate(File.join(mount, path, key))
+        ovpath = context.interpolate(File.join(mount, path, key))
+
+        if options['filter_mode'] > 0
+          filter_prefix = options['filter_prefix'] unless options['filter_prefix'].nil?
+          secretpath = ovpath.sub(/#{filter_prefix}/, '')
+        else
+          secretpath = ovpath
+        end
 
         context.explain { "[hiera-vault] Looking in path #{secretpath}" }
 
