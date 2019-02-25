@@ -115,11 +115,7 @@ Puppet::Functions.create_function(:hiera_vault) do
 
     answer = nil
 
-    if options['mounts']['generic']
-      raise ArgumentError, "[hiera-vault] generic is no longer valid - change to kv"
-    else
-      kv_mounts = options['mounts'].dup
-    end
+    kv_mounts = options['mounts'].dup
 
     # Only kv mounts supported so far
     kv_mounts.each_pair do |mount, paths|
